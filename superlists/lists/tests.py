@@ -25,7 +25,7 @@ class HomePageTest(TestCase):
 class NewListTest(TestCase):
     def test_saving_a_POST_request(self):
         self.client.post(
-            'lists/new',
+            '/lists/new',
             data={'item_text': 'A new list item'}
         )
 
@@ -35,11 +35,10 @@ class NewListTest(TestCase):
 
     def test_redirects_after_POST(self):
         response = self.client.post(
-            'lists/new',
+            '/lists/new',
             data={'item_text': 'A new list item'}
         )
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['location'], '/lists/the-only-list-in-the-world/')
+        self.assertRedirects(response, '/lists/the-only-list-in-the-world/')
 
 class ItemModelTest(TestCase):
     
@@ -62,7 +61,7 @@ class ItemModelTest(TestCase):
 
 class ListViewTest(TestCase):
     def test_uses_list_template(self):
-        response = self.client.get('/lists/the-ony-list-in-the-world/')
+        response = self.client.get('/lists/the-only-list-in-the-world/')
         self.assertTemplateUsed(response, 'list.html')
         
     def test_home_page_displays_all_items(self):
